@@ -24,9 +24,9 @@ class ConvNet(nn.Module):
 
         self.fc1 = nn.Linear(64 * 8 * 8, 1024)
         self.bn7 = nn.BatchNorm1d(1024)
-        self.fc2 = nn.Linear(1024, 512)
-        self.bn8 = nn.BatchNorm1d(512)
-        self.fc3 = nn.Linear(512, 156)
+        self.fc2 = nn.Linear(1024, 256)
+        self.bn8 = nn.BatchNorm1d(256)
+        self.fc3 = nn.Linear(256, 30)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))

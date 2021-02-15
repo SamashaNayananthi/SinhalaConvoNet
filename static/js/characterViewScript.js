@@ -126,6 +126,21 @@ function clearCanvas() {
         preview.setAttribute('src', "");
         imgUploaded = false;
     }
+
+    const guess = document.getElementById("guess");
+    guess.textContent = "";
+
+    const confidence = document.getElementById("confidence");
+    confidence.textContent = "";
+
+    const guess2Heading = document.getElementById("guess2Heading");
+    guess2Heading.textContent = "";
+
+    const guess2 = document.getElementById("guess2");
+    guess2.textContent = "";
+
+    const confidence2 = document.getElementById("confidence2");
+    confidence2.textContent = "";
 }
 
 function suggest() {
