@@ -5,7 +5,6 @@ from torchvision import datasets, transforms
 import torch
 import pandas as pd
 import matplotlib.pyplot as plt
-import torchvision
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -31,12 +30,9 @@ class Process(object):
         return result
 
 
-transform = transforms.Compose([Process(), transforms.ToTensor(), transforms.Normalize((0.5), (0.5))])
-# trainDir = 'D:/Final Year/Final Year Project/dataset-processed1/train'
-# testDir = 'D:/Final Year/Final Year Project/dataset-processed1/test'
-
-trainDir = 'C:/Users/User/PycharmProjects/FYP1/data/processedDataset/train'
-testDir = 'C:/Users/User/PycharmProjects/FYP1/data/processedDataset/test'
+transform = transforms.Compose([Process(), transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+trainDir = 'D:/Final Year/Final Year Project/dataset-processed1/train'
+testDir = 'D:/Final Year/Final Year Project/dataset-processed1/test'
 
 trainingSet = datasets.ImageFolder(trainDir, transform)
 print("Full Train Set - ", len(trainingSet))
@@ -51,7 +47,7 @@ trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=64, shuffle=True)
 validationLoader = torch.utils.data.DataLoader(validationSet, batch_size=64, shuffle=True)
 testLoader = torch.utils.data.DataLoader(testSet, batch_size=64, shuffle=True)
 
-df = pd.read_csv('data/SinhalaChar1.csv', header=0)
+df = pd.read_csv('SinhalaCharacters.csv', header=0)
 unicodeList = df["Unicode"].tolist()
 char_list = []
 
@@ -66,25 +62,16 @@ for element in unicodeList:
     char_list.append(charsTogether)
 
 classes = []
-for i in range(7):
+for i in range(31):
     index = int(testSet.classes[i])
     char = char_list[index]
     classes.append(char)
 
 print("Available Classes", classes)
 
-
-def show(img):
-    img = img / 2 + 0.5
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
-    plt.show()
-
-
 dataIterator = iter(trainLoader)
 images, labels = dataIterator.next()
 
-# show(torchvision.utils.make_grid(images[:7]))
 print(' '.join('%5s' % classes[labels[j]] for j in range(5)))
 
 
@@ -118,7 +105,7 @@ class Net(nn.Module):
         self.bn7 = nn.BatchNorm1d(1024)
         self.fc2 = nn.Linear(1024, 256)
         self.bn8 = nn.BatchNorm1d(256)
-        self.fc3 = nn.Linear(256, 30)
+        self.fc3 = nn.Linear(256, 31)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
@@ -220,14 +207,13 @@ data_thing = dataIteratorTest.next()
 images, labels = data_thing[0].to(device), data_thing[1].to(device)
 
 imgs = images.cpu()
-# show(torchvision.utils.make_grid(imgs[:4]))
-print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
+print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(10)))
 
-outputs = net(images[:4])
+outputs = net(images[:10])
 _, predicted = torch.max(outputs, 1)
 
 print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
-                              for j in range(4)))
+                              for j in range(10)))
 
 correct = 0
 total = 0
@@ -239,6 +225,6 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print('Accuracy of the network on the 1200 test images: %f %%' % (100 * correct / total))
+print('Accuracy of the network on the 1240 test images: %f %%' % (100 * correct / total))
 
-# torch.save(net.state_dict(), 'Sinhala_conv_net60.pt')
+torch.save(net.state_dict(), '../Sinhala_conv_net_whitwBG.pt')

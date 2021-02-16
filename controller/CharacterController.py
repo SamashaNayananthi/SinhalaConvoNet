@@ -5,7 +5,7 @@ import ConvNet as Net
 import Prediction as inference
 
 net = Net.net
-net.load_state_dict(torch.load("Sinhala_conv_net30.pt", map_location=torch.device('cpu')))
+net.load_state_dict(torch.load("Sinhala_conv_net_whitwBG.pt", map_location=torch.device('cpu')))
 net.eval()
 
 classes = inference.classes
