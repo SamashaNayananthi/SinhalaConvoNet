@@ -30,9 +30,9 @@ test_root = 'D:/Final Year/Final Year Project/dataset1/test/'
 train_target = 'D:/Final Year/Final Year Project/dataset-processed1/train'
 test_target = 'D:/Final Year/Final Year Project/dataset-processed1/test/'
 
-for i in range(31):
-    os.mkdir(os.path.join(train_target, str(i)))
-    os.mkdir(os.path.join(test_target, str(i)))
+# for i in range(31):
+#     os.mkdir(os.path.join(train_target, str(i)))
+#     os.mkdir(os.path.join(test_target, str(i)))
 
 train_count = 0
 for root, dirs, files in os.walk(train_root):

@@ -227,4 +227,4 @@ with torch.no_grad():
 
 print('Accuracy of the network on the 1240 test images: %f %%' % (100 * correct / total))
 
-torch.save(net.state_dict(), '../Sinhala_conv_net_whitwBG.pt')
+# torch.save(net.state_dict(), '../Sinhala_conv_net_whiteBG.pt')
