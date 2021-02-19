@@ -127,6 +127,49 @@ class Net(nn.Module):
         return x
 
 
+@torch.no_grad()
+def get_all_preds(model, loader):
+    all_preds = torch.tensor([])
+    for batch in loader:
+        images, labels = batch
+
+        preds = model(images)
+        all_preds = torch.cat(
+            (all_preds, preds)
+            , dim=0
+        )
+    return all_preds
+
+
+def plot_confusion_matrix(cm, classes, title, normalize=False, cmap=plt.cm.Blues):
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    print(title)
+    print(cm)
+    prop = fm.FontProperties(fname='Nirmala.ttf')
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45, fontproperties=prop)
+    plt.yticks(tick_marks, classes, fontproperties=prop)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt), horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.show()
+
+
 net = Net()
 net.apply(initializeWeights)
 net.to(device)
@@ -146,7 +189,7 @@ fig.suptitle('Accuracy')
 x_two = []
 running_losses = []
 
-for epoch in range(30):
+for epoch in range(5):
     x.append(epoch)
 
     curr_train_loss = 0.0
@@ -171,9 +214,9 @@ for epoch in range(30):
         if i % 100 == 99:
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 100))
-            running_losses.append(running_loss)
-            x_two.append(epoch + i * 64 / len(trainSet))
-            running_loss = 0.0
+        running_losses.append(running_loss)
+        x_two.append(epoch + i * 64 / len(trainSet))
+        running_loss = 0.0
 
     train_loss.append(curr_train_loss / len(trainSet) * 64)
     train_accuracy.append(100 * train_correct / train_total)
@@ -229,5 +272,13 @@ with torch.no_grad():
         correct += (predicted == labels).sum().item()
 
 print('Accuracy of the network on the 1240 test images: %f %%' % (100 * correct / total))
+
+with torch.no_grad():
+    test_prediction_loader = torch.utils.data.DataLoader(testSet, batch_size=1240)
+    test_preds = get_all_preds(net, test_prediction_loader)
+
+cmTesting = confusion_matrix(testSet.targets, test_preds.argmax(dim=1))
+plt.figure(figsize=(31, 31))
+plot_confusion_matrix(cmTesting, classes, "Confusion Matrix for Test Set")
 
 # torch.save(net.state_dict(), '../Sinhala_conv_net_whiteBG.pt')
