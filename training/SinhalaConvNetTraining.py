@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from sklearn.metrics import confusion_matrix
+import itertools
+import matplotlib.font_manager as fm
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device - ", device)
