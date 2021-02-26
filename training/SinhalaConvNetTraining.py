@@ -11,6 +11,7 @@ import torch.optim as optim
 from sklearn.metrics import confusion_matrix
 import itertools
 import matplotlib.font_manager as fm
+from sklearn.metrics import classification_report
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device - ", device)
@@ -98,11 +99,13 @@ class Net(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.conv4 = nn.Conv2d(32, 32, 3, padding=1)
         self.bn4 = nn.BatchNorm2d(32)
+        self.pool2 = nn.MaxPool2d(2, 2)
 
         self.conv5 = nn.Conv2d(32, 64, 3, padding=1)
         self.bn5 = nn.BatchNorm2d(64)
         self.conv6 = nn.Conv2d(64, 64, 3, padding=1)
         self.bn6 = nn.BatchNorm2d(64)
+        self.pool3 = nn.MaxPool2d(2, 2)
 
         self.fc1 = nn.Linear(64 * 8 * 8, 1024)
         self.bn7 = nn.BatchNorm1d(1024)
@@ -115,10 +118,10 @@ class Net(nn.Module):
         x = self.pool1(F.relu(self.bn2(self.conv2(x))))
 
         x = F.relu(self.bn3(self.conv3(x)))
-        x = self.pool1(F.relu(self.bn4(self.conv4(x))))
+        x = self.pool2(F.relu(self.bn4(self.conv4(x))))
 
         x = F.relu(self.bn5(self.conv5(x)))
-        x = self.pool1(F.relu(self.bn6(self.conv6(x))))
+        x = self.pool3(F.relu(self.bn6(self.conv6(x))))
 
         x = x.view(-1, 64 * 8 * 8)
         x = F.relu(self.bn7(self.fc1(x)))
@@ -189,7 +192,7 @@ fig.suptitle('Accuracy')
 x_two = []
 running_losses = []
 
-for epoch in range(5):
+for epoch in range(30):
     x.append(epoch)
 
     curr_train_loss = 0.0
@@ -261,13 +264,17 @@ _, predicted = torch.max(outputs, 1)
 print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
                               for j in range(10)))
 
+lableList = []
+predictedList = []
 correct = 0
 total = 0
 with torch.no_grad():
     for data in testLoader:
         images, labels = data[0].to(device), data[1].to(device)
+        lableList.extend(labels)
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
+        predictedList.extend(predicted)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
@@ -280,5 +287,8 @@ with torch.no_grad():
 cmTesting = confusion_matrix(testSet.targets, test_preds.argmax(dim=1))
 plt.figure(figsize=(31, 31))
 plot_confusion_matrix(cmTesting, classes, "Confusion Matrix for Test Set")
+
+print("Classification report")
+print(classification_report(lableList, predictedList))
 
 # torch.save(net.state_dict(), '../Sinhala_conv_net_whiteBG.pt')

@@ -16,11 +16,13 @@ class ConvNet(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.conv4 = nn.Conv2d(32, 32, 3, padding=1)
         self.bn4 = nn.BatchNorm2d(32)
+        self.pool2 = nn.MaxPool2d(2, 2)
 
         self.conv5 = nn.Conv2d(32, 64, 3, padding=1)
         self.bn5 = nn.BatchNorm2d(64)
         self.conv6 = nn.Conv2d(64, 64, 3, padding=1)
         self.bn6 = nn.BatchNorm2d(64)
+        self.pool3 = nn.MaxPool2d(2, 2)
 
         self.fc1 = nn.Linear(64 * 8 * 8, 1024)
         self.bn7 = nn.BatchNorm1d(1024)
@@ -33,10 +35,10 @@ class ConvNet(nn.Module):
         x = self.pool1(F.relu(self.bn2(self.conv2(x))))
 
         x = F.relu(self.bn3(self.conv3(x)))
-        x = self.pool1(F.relu(self.bn4(self.conv4(x))))
+        x = self.pool2(F.relu(self.bn4(self.conv4(x))))
 
         x = F.relu(self.bn5(self.conv5(x)))
-        x = self.pool1(F.relu(self.bn6(self.conv6(x))))
+        x = self.pool3(F.relu(self.bn6(self.conv6(x))))
 
         x = x.view(-1, 64 * 8 * 8)
         x = F.relu(self.bn7(self.fc1(x)))
