@@ -73,11 +73,6 @@ for i in range(31):
 
 print("Available Classes", classes)
 
-dataIterator = iter(trainLoader)
-images, labels = dataIterator.next()
-
-print(' '.join('%5s' % classes[labels[j]] for j in range(5)))
-
 
 def initializeWeights(m):
     if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):

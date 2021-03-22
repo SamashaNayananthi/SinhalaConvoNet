@@ -7,6 +7,7 @@ from scipy import ndimage
 import torch
 from torchvision import transforms
 import model.Character as characterModel
+import torch.nn.functional as F
 
 classes = ['අ', 'ආ', 'ශ', 'ධ', 'උ', 'ච', 'ඉ', 'ය', 'කැ', 'කෑ', 'කි', 'කී', 'ද', 'කු', 'කෙ', 'කො', 'එ',
            'ක', 'ග', 'ට', 'ඩ', 'න', 'ත', 'ණ', 'හ', 'ප', 'බ', 'ර', 'ල', 'ව', 'ස']
@@ -56,10 +57,8 @@ def get_prediction(url, net):
     transformed = transformImg(img)
     output = net(transformed)
     probabilities, predictions = torch.topk(output.data, 2)
-    print(probabilities.data[0][0])
-    print(predictions.data[0][0])
-    print(probabilities.data[0][1])
-    print(predictions.data[0][1])
+    print("Probability : ", probabilities.data[0][0].item(), " - Prediction : ", predictions.data[0][0].item())
+    print("Probability : ", probabilities.data[0][1].item(), " - Prediction : ", predictions.data[0][1].item())
     confidence1 = int(round(probabilities.data[0][0].item() * 100))
     confidence2 = int(round(probabilities.data[0][1].item() * 100))
     guess = characterModel.Character(classes[predictions.data[0][0]], confidence1, classes[predictions.data[0][1]],
