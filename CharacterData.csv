@@ -1,32 +1,32 @@
-﻿Class,Character,Unicode
-0,අ,0D85
-1,ආ,0D86
-2,ශ,0DC1
-3,ධ,0DB0
-4,උ,0D8B
-5,ච,0DA0
-6,ඉ,0D89
-7,ය,0DBA
-8,කැ,0D9A 0DD0
-9,කෑ,0D9A 0DD1
-10,කි,0D9A 0DD2
-11,කී,0D9A 0DD3
-12,ද,0DAF
-13,කු,0D9A 0DD4
-14,කෙ,0D9A 0DD9
-15,කො,0D9A 0DDC
-16,එ,0D91
-17,ක,0D9A
-18,ග,0D9C
-19,ට,0DA7
-20,ඩ,0DA9
-21,න,0DB1
-22,ත,0DAD
-23,ණ,0DAB
-24,හ,0DC4
-25,ප,0DB4
-26,බ,0DB6
-27,ර,0DBB
-28,ල,0DBD
-29,ව,0DC0
-30,ස,0DC3
+﻿Class,Character,Unicode,Phonetic
+0,අ,0D85,a
+1,ආ,0D86,ā
+2,ශ,0DC1,śa
+3,ධ,0DB0,dha
+4,උ,0D8B,u
+5,ච,0DA0,cha
+6,ඉ,0D89,i
+7,ය,0DBA,ya
+8,කැ,0D9A 0DD0,kæ
+9,කෑ,0D9A 0DD1,kǣ
+10,කි,0D9A 0DD2,ki
+11,කී,0D9A 0DD3,kī
+12,ද,0DAF,da
+13,කු,0D9A 0DD4,ku
+14,කෙ,0D9A 0DD9,ke
+15,කො,0D9A 0DDC,ko
+16,එ,0D91,e
+17,ක,0D9A,ka
+18,ග,0D9C,ga
+19,ට,0DA7,ṭa
+20,ඩ,0DA9,ḍa
+21,න,0DB1,na
+22,ත,0DAD,ta
+23,ණ,0DAB,ṇa
+24,හ,0DC4,ha
+25,ප,0DB4,pa
+26,බ,0DB6,ba
+27,ර,0DBB,ra
+28,ල,0DBD,la
+29,ව,0DC0,va
+30,ස,0DC3,sa
