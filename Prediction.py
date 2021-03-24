@@ -8,10 +8,10 @@ import torch
 from torchvision import transforms
 import model.Character as characterModel
 import torch.nn.functional as F
+import pandas as pd
 
-classes = ['අ', 'ආ', 'ශ', 'ධ', 'උ', 'ච', 'ඉ', 'ය', 'කැ', 'කෑ', 'කි', 'කී', 'ද', 'කු', 'කෙ', 'කො', 'එ',
-           'ක', 'ග', 'ට', 'ඩ', 'න', 'ත', 'ණ', 'හ', 'ප', 'බ', 'ර', 'ල', 'ව', 'ස']
-
+df = pd.read_csv('CharacterData.csv', header=0)
+classesList = df["Character"].tolist()
 
 def url_to_img(dataURL):
     string = str(dataURL)
@@ -57,10 +57,14 @@ def get_prediction(url, net):
     transformed = transformImg(img)
     output = net(transformed)
     probabilities, predictions = torch.topk(output.data, 2)
-    print("Probability : ", probabilities.data[0][0].item(), " - Prediction : ", predictions.data[0][0].item())
-    print("Probability : ", probabilities.data[0][1].item(), " - Prediction : ", predictions.data[0][1].item())
+
+    print("prediction - ", classesList[predictions.data[0][0]], " - ", predictions.data[0][0].item(),
+          " : Probability - ", probabilities.data[0][0].item())
+
+    print("prediction - ", classesList[predictions.data[0][1]], " - ", predictions.data[0][1].item(),
+          " : Probability - ", probabilities.data[0][1].item())
     confidence1 = int(round(probabilities.data[0][0].item() * 100))
     confidence2 = int(round(probabilities.data[0][1].item() * 100))
-    guess = characterModel.Character(classes[predictions.data[0][0]], confidence1, classes[predictions.data[0][1]],
-                                     confidence2)
+    guess = characterModel.Character(classesList[predictions.data[0][0]], confidence1,
+                                     classesList[predictions.data[0][1]], confidence2)
     return json.dumps(guess.__dict__)
