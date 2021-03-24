@@ -12,6 +12,7 @@ import pandas as pd
 
 df = pd.read_csv('CharacterData.csv', header=0)
 classesList = df["Character"].tolist()
+phoneticList = df["Phonetic"].tolist()
 
 def url_to_img(dataURL):
     string = str(dataURL)
