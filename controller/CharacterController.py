@@ -8,7 +8,7 @@ net = Net.net
 net.load_state_dict(torch.load("Sinhala_conv_net_whiteBG.pt", map_location=torch.device('cpu')))
 net.eval()
 
-classes = inference.classes
+classes = inference.classesList
 
 characterBP = Blueprint('character', __name__)
 
