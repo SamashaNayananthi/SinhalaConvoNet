@@ -157,3 +157,21 @@ function suggest() {
     fetch("/character/suggest/").then(response => response.text())
         .then(data => suggestion.textContent = "Not sure what to draw??  Try " + data + " .");
 }
+
+function openModal() {
+    let modal = document.getElementById("myModal");
+    modal.style.display = "block";
+}
+
+function closeModal(){
+    let modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    let modal = document.getElementById("myModal");
+
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
