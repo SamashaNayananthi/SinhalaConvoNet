@@ -38,21 +38,29 @@
             <img src="" id="preview" width=250px>
         </div>
         <div id="buttons">
-            <button type="button" class="btn btn-warning" id="clear" onclick="clearCanvas()">Clear</button>
-            <button type="button" class="btn btn-warning" id="submit" onclick="submitImage()">Guess</button>
+            <button type="button" class="btn btn-warning" onclick="clearCanvas()">Clear</button>
+            <button type="button" class="btn btn-warning" onclick="submitImage()">Guess</button>
         </div>
     </div>
 
     <div id="guessarea" class="col-md-4">
-        <h3 class="text-center">First guess :</h3>
-        <p id="guess" class="h1 text-center"></p>
-        <p id="confidence" class="h5 font-weight-normal text-center"></p>
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <h3 class="text-center">First guess :</h3>
+                <p id="guess" class="h1 text-center"></p>
+                <p id="confidence" class="h5 font-weight-normal text-center"></p>
 
-        <br>
+                <br>
 
-        <h4 id="guess2Heading" class="text-center"></h4>
-        <p id="guess2" class="h2 text-center"></p>
-        <p id="confidence2" class="h6 font-weight-normal text-center"></p>
+                <h4 id="guess2Heading" class="text-center"></h4>
+                <p id="guess2" class="h2 text-center"></p>
+                <p id="confidence2" class="h6 font-weight-normal text-center"></p>
+            </div>
+
+            <div class="col-md-3">
+                <button type="button" class="btn btn-warning" id="info" onclick="moreInfo()">More Info</button>
+            </div>
+        </div>
     </div>
 </div>
 

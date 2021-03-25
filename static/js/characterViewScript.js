@@ -2,6 +2,9 @@ let imgUploaded = false;
 let uploadedImg = null;
 
 document.addEventListener("DOMContentLoaded", function () {
+    let infoBtn = document.getElementById("info");
+    infoBtn.style.display = "none";
+
     suggest();
 
     imgUploaded = false;
@@ -105,6 +108,9 @@ function predictImage(img) {
 
         const confidence2 = document.getElementById("confidence2");
         confidence2.textContent = "(confidence: " + reponseObj._secondGuessConfidentLvl + "%)";
+
+        let infoBtn = document.getElementById("info");
+        infoBtn.style.display = "block";
     }).catch((error) => {
         console.log(error);
     });
@@ -141,6 +147,9 @@ function clearCanvas() {
 
     const confidence2 = document.getElementById("confidence2");
     confidence2.textContent = "";
+
+    let infoBtn = document.getElementById("info");
+    infoBtn.style.display = "none";
 }
 
 function suggest() {
