@@ -12,7 +12,6 @@ import pandas as pd
 
 df = pd.read_csv('CharacterData.csv', header=0)
 classesList = df["Character"].tolist()
-phoneticList = df["Phonetic"].tolist()
 
 def url_to_img(dataURL):
     string = str(dataURL)
@@ -66,6 +65,6 @@ def get_prediction(url, net):
           " : Probability - ", probabilities.data[0][1].item())
     confidence1 = int(round(probabilities.data[0][0].item() * 100))
     confidence2 = int(round(probabilities.data[0][1].item() * 100))
-    guess = characterModel.Character(classesList[predictions.data[0][0]], confidence1,
-                                     classesList[predictions.data[0][1]], confidence2)
+    guess = characterModel.Character(predictions.data[0][0].item(), classesList[predictions.data[0][0]], confidence1,
+                                     predictions.data[0][1].item(), classesList[predictions.data[0][1]], confidence2)
     return json.dumps(guess.__dict__)

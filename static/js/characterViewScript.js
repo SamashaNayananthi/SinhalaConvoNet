@@ -94,6 +94,9 @@ function predictImage(img) {
         console.log(data);
         let reponseObj = JSON.parse(data);
 
+        const firstGuessClass = document.getElementById("firstGuessClass");
+        firstGuessClass.setAttribute("value", reponseObj._firstGuessClass);
+
         const guess = document.getElementById("guess");
         guess.textContent = reponseObj._firstGuess;
 
@@ -159,8 +162,25 @@ function suggest() {
 }
 
 function openModal() {
-    let modal = document.getElementById("myModal");
-    modal.style.display = "block";
+    let characterClass = document.getElementById("firstGuessClass").value;
+    fetch("/character/info/" + characterClass, {
+        method: "GET"
+    }).then((data) => {
+        if (data.ok) {
+            return data.text();
+        } else {
+            throw Error(data.statusText);
+        }
+    }).then((data) => {
+        console.log(data);
+        let responseObj = JSON.parse(data);
+        console.log(responseObj);
+
+        let modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }).catch((error) => {
+        console.log(error);
+    });
 }
 
 function closeModal(){
