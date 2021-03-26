@@ -94,22 +94,22 @@ function predictImage(img) {
         console.log(data);
         let reponseObj = JSON.parse(data);
 
-        const firstGuessClass = document.getElementById("firstGuessClass");
+        let firstGuessClass = document.getElementById("firstGuessClass");
         firstGuessClass.setAttribute("value", reponseObj._firstGuessClass);
 
-        const guess = document.getElementById("guess");
+        let guess = document.getElementById("guess");
         guess.textContent = reponseObj._firstGuess;
 
-        const confidence = document.getElementById("confidence");
+        let confidence = document.getElementById("confidence");
         confidence.textContent = "(confidence: " + reponseObj._firstGuessConfidentLvl + "%)";
 
-        const guess2Heading = document.getElementById("guess2Heading");
+        let guess2Heading = document.getElementById("guess2Heading");
         guess2Heading.textContent = "Second guess :";
 
-        const guess2 = document.getElementById("guess2");
+        let guess2 = document.getElementById("guess2");
         guess2.textContent = reponseObj._secondGuess;
 
-        const confidence2 = document.getElementById("confidence2");
+        let confidence2 = document.getElementById("confidence2");
         confidence2.textContent = "(confidence: " + reponseObj._secondGuessConfidentLvl + "%)";
 
         let infoBtn = document.getElementById("info");
@@ -174,7 +174,12 @@ function openModal() {
     }).then((data) => {
         console.log(data);
         let responseObj = JSON.parse(data);
-        console.log(responseObj);
+        document.getElementById("characterName").textContent = responseObj._name;
+        document.getElementById("character").textContent = responseObj._character;
+        document.getElementById("unicode").textContent = ": U + " + responseObj._unicode;
+        document.getElementById("phonetic").textContent = ": " + responseObj._phonetic;
+        document.getElementById("group").textContent = ": " + responseObj._group;
+        document.getElementById("description").textContent = ": " + responseObj._description;
 
         let modal = document.getElementById("myModal");
         modal.style.display = "block";
