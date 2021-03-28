@@ -9,6 +9,11 @@ net = Net.net
 net.load_state_dict(torch.load("Sinhala_conv_net_whiteBG.pt", map_location=torch.device('cpu')))
 net.eval()
 
+<<<<<<< HEAD
+classes = inference.classesList
+
+=======
+>>>>>>> origin/feature/pronounciation_info
 characterBP = Blueprint('character', __name__)
 
 

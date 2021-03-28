@@ -2,6 +2,9 @@ let imgUploaded = false;
 let uploadedImg = null;
 
 document.addEventListener("DOMContentLoaded", function () {
+    let infoBtn = document.getElementById("info");
+    infoBtn.style.display = "none";
+
     suggest();
 
     imgUploaded = false;
@@ -91,20 +94,26 @@ function predictImage(img) {
         console.log(data);
         let reponseObj = JSON.parse(data);
 
-        const guess = document.getElementById("guess");
+        let firstGuessClass = document.getElementById("firstGuessClass");
+        firstGuessClass.setAttribute("value", reponseObj._firstGuessClass);
+
+        let guess = document.getElementById("guess");
         guess.textContent = reponseObj._firstGuess;
 
-        const confidence = document.getElementById("confidence");
+        let confidence = document.getElementById("confidence");
         confidence.textContent = "(confidence: " + reponseObj._firstGuessConfidentLvl + "%)";
 
-        const guess2Heading = document.getElementById("guess2Heading");
+        let guess2Heading = document.getElementById("guess2Heading");
         guess2Heading.textContent = "Second guess :";
 
-        const guess2 = document.getElementById("guess2");
+        let guess2 = document.getElementById("guess2");
         guess2.textContent = reponseObj._secondGuess;
 
-        const confidence2 = document.getElementById("confidence2");
+        let confidence2 = document.getElementById("confidence2");
         confidence2.textContent = "(confidence: " + reponseObj._secondGuessConfidentLvl + "%)";
+
+        let infoBtn = document.getElementById("info");
+        infoBtn.style.display = "block";
     }).catch((error) => {
         console.log(error);
     });
@@ -141,10 +150,63 @@ function clearCanvas() {
 
     const confidence2 = document.getElementById("confidence2");
     confidence2.textContent = "";
+
+    let infoBtn = document.getElementById("info");
+    infoBtn.style.display = "none";
 }
 
 function suggest() {
     const suggestion = document.getElementById("suggestion");
     fetch("/character/suggest/").then(response => response.text())
         .then(data => suggestion.textContent = "Not sure what to draw??  Try " + data + " .");
+}
+
+function openModal() {
+    let characterClass = document.getElementById("firstGuessClass").value;
+    fetch("/character/info/" + characterClass, {
+        method: "GET"
+    }).then((data) => {
+        if (data.ok) {
+            return data.text();
+        } else {
+            throw Error(data.statusText);
+        }
+    }).then((data) => {
+        console.log(data);
+        let responseObj = JSON.parse(data);
+        document.getElementById("characterName").textContent = responseObj._name;
+        if (characterClass !== "15") {
+            document.getElementById("character").textContent = responseObj._character;
+            document.getElementById("character").style.display = "block";
+            document.getElementById("characterKo").style.display = "none";
+        } else {
+            document.getElementById("characterKo").textContent = responseObj._character;
+            document.getElementById("characterKo").style.display = "block";
+            document.getElementById("character").style.display = "none";
+        }
+
+
+        document.getElementById("unicode").textContent = ": U + " + responseObj._unicode;
+        document.getElementById("phonetic").textContent = ": " + responseObj._phonetic;
+        document.getElementById("group").textContent = ": " + responseObj._group;
+        document.getElementById("description").textContent = ": " + responseObj._description;
+
+        let modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+function closeModal(){
+    let modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    let modal = document.getElementById("myModal");
+
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
