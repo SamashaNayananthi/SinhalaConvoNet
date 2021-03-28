@@ -1,8 +1,10 @@
 import pandas as pd
 import json
 import model.CharacterInfo as characterInfo
+import random
 
 df = pd.read_csv('CharacterData.csv', header=0)
+classesList = df["Character"].tolist()
 
 
 def get_info(characterClass):
@@ -18,3 +20,8 @@ def get_info(characterClass):
                                        str(characterInfoRow.iloc[0]["Group"]),
                                        str(characterInfoRow.iloc[0]["Description"]))
     return json.dumps(info.__dict__)
+
+
+def get_suggestion():
+    suggestion = random.choice(classesList)
+    return suggestion

@@ -9,8 +9,6 @@ net = Net.net
 net.load_state_dict(torch.load("Sinhala_conv_net_whiteBG.pt", map_location=torch.device('cpu')))
 net.eval()
 
-classes = inference.classesList
-
 characterBP = Blueprint('character', __name__)
 
 
@@ -23,7 +21,7 @@ def predict():
 
 @characterBP.route('/suggest/', methods=['GET', 'POST'])
 def suggest():
-    suggestion = random.choice(classes)
+    suggestion = infoLogic.get_suggestion()
     return suggestion
 
 
