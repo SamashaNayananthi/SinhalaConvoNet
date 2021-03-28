@@ -140,7 +140,12 @@ button {
     grid-template-columns: auto auto;
 }
 
-.character {
+#character {
     font-size: 150px;
-    margin: auto;
+    text-align: center;
+}
+
+#characterKo {
+    font-size: 100px;
+    text-align: center;
 }

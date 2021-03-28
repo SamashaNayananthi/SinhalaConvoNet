@@ -58,13 +58,17 @@ def get_prediction(url, net):
     output = net(transformed)
     probabilities, predictions = torch.topk(output.data, 2)
 
-    print("prediction - ", classesList[predictions.data[0][0]], " - ", predictions.data[0][0].item(),
-          " : Probability - ", probabilities.data[0][0].item())
+    print("prediction - ", classesList[predictions.data[0][0]], " - ",
+          predictions.data[0][0].item(), " : Probability - ", probabilities.data[0][0].item())
+    print("prediction - ", classesList[predictions.data[0][1]], " - ",
+          predictions.data[0][1].item(), " : Probability - ", probabilities.data[0][1].item())
 
-    print("prediction - ", classesList[predictions.data[0][1]], " - ", predictions.data[0][1].item(),
-          " : Probability - ", probabilities.data[0][1].item())
     confidence1 = int(round(probabilities.data[0][0].item() * 100))
     confidence2 = int(round(probabilities.data[0][1].item() * 100))
-    guess = characterModel.Character(predictions.data[0][0].item(), classesList[predictions.data[0][0]], confidence1,
-                                     predictions.data[0][1].item(), classesList[predictions.data[0][1]], confidence2)
+    guess = characterModel.Character(predictions.data[0][0].item(),
+                                     classesList[predictions.data[0][0]],
+                                     confidence1,
+                                     predictions.data[0][1].item(),
+                                     classesList[predictions.data[0][1]],
+                                     confidence2)
     return json.dumps(guess.__dict__)

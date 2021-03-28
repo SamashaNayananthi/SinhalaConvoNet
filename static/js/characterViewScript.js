@@ -175,7 +175,17 @@ function openModal() {
         console.log(data);
         let responseObj = JSON.parse(data);
         document.getElementById("characterName").textContent = responseObj._name;
-        document.getElementById("character").textContent = responseObj._character;
+        if (characterClass !== "15") {
+            document.getElementById("character").textContent = responseObj._character;
+            document.getElementById("character").style.display = "block";
+            document.getElementById("characterKo").style.display = "none";
+        } else {
+            document.getElementById("characterKo").textContent = responseObj._character;
+            document.getElementById("characterKo").style.display = "block";
+            document.getElementById("character").style.display = "none";
+        }
+
+
         document.getElementById("unicode").textContent = ": U + " + responseObj._unicode;
         document.getElementById("phonetic").textContent = ": " + responseObj._phonetic;
         document.getElementById("group").textContent = ": " + responseObj._group;
