@@ -1,11 +1,12 @@
 class CharacterInfo:
-    def __init__(self, character, name, unicode, phonetic, group, description):
+    def __init__(self, character, name, unicode, phonetic, group, description, audio):
         self._character = character
         self._name = name
         self._unicode = unicode
         self._phonetic = phonetic
         self._group = group
         self._description = description
+        self._audio = audio
 
     @property
     def character(self):
@@ -54,3 +55,11 @@ class CharacterInfo:
     @description.setter
     def description(self, description):
         self._description = description
+
+    @property
+    def audio(self):
+        return self._audio
+
+    @audio.setter
+    def audio(self, audio):
+        self._audio = audio

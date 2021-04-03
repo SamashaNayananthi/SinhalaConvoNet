@@ -185,11 +185,16 @@ function openModal() {
             document.getElementById("character").style.display = "none";
         }
 
-
         document.getElementById("unicode").textContent = ": U + " + responseObj._unicode;
         document.getElementById("phonetic").textContent = ": " + responseObj._phonetic;
         document.getElementById("group").textContent = ": " + responseObj._group;
         document.getElementById("description").textContent = ": " + responseObj._description;
+
+        let audioSrcResponse = responseObj._audio;
+        let splittedStr = audioSrcResponse.split("'");
+        let audioSrc = splittedStr[1];
+        document.getElementById("audioSource").src = "data:audio/mp3;base64," + audioSrc;
+        document.getElementById("audio").load();
 
         let modal = document.getElementById("myModal");
         modal.style.display = "block";

@@ -149,3 +149,7 @@ button {
     font-size: 100px;
     text-align: center;
 }
+
+.audio {
+    margin: auto;
+}
