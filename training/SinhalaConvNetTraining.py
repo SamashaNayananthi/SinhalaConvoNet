@@ -8,10 +8,9 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from sklearn.metrics import confusion_matrix
 import itertools
 import matplotlib.font_manager as fm
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device - ", device)
@@ -187,7 +186,7 @@ fig.suptitle('Accuracy')
 x_two = []
 running_losses = []
 
-for epoch in range(30):
+for epoch in range(1):
     x.append(epoch)
 
     curr_train_loss = 0.0
@@ -285,5 +284,37 @@ plot_confusion_matrix(cmTesting, classes, "Confusion Matrix for Test Set")
 
 print("Classification report")
 print(classification_report(lableList, predictedList))
+
+
+def test_class_probabilities(which_class):
+    actuals = []
+    probabilities = []
+    with torch.no_grad():
+        for data, target in testLoader:
+            data, target = data.to(device), target.to(device)
+            output = net(data)
+            prediction = output.argmax(dim=1, keepdim=True)
+            actuals.extend(target.view_as(prediction) == which_class)
+            probabilities.extend(np.exp(output[:, which_class]))
+    return [i.item() for i in actuals], [i.item() for i in probabilities]
+
+
+which_class = 5
+actuals, class_probabilities = test_class_probabilities(which_class)
+
+fpr, tpr, _ = roc_curve(actuals, class_probabilities)
+roc_auc = auc(fpr, tpr)
+plt.figure()
+lw = 2
+plt.plot(fpr, tpr, color='darkorange',
+         lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
+plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC for digit=%d class' % which_class)
+plt.legend(loc="lower right")
+plt.show()
 
 # torch.save(net.state_dict(), '../Sinhala_conv_net_whiteBG.pt')
