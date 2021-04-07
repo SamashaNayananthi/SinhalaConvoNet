@@ -186,7 +186,7 @@ fig.suptitle('Accuracy')
 x_two = []
 running_losses = []
 
-for epoch in range(1):
+for epoch in range(30):
     x.append(epoch)
 
     curr_train_loss = 0.0
@@ -299,22 +299,35 @@ def test_class_probabilities(which_class):
     return [i.item() for i in actuals], [i.item() for i in probabilities]
 
 
-which_class = 5
-actuals, class_probabilities = test_class_probabilities(which_class)
+def plot_AUC_ROC_curve(classList):
+    colors = ['blue', 'darkorange', 'red', 'yellow', 'green', 'pink']
+    plt.figure()
+    lw = 2
 
-fpr, tpr, _ = roc_curve(actuals, class_probabilities)
-roc_auc = auc(fpr, tpr)
-plt.figure()
-lw = 2
-plt.plot(fpr, tpr, color='darkorange',
-         lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
-plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('ROC for digit=%d class' % which_class)
-plt.legend(loc="lower right")
-plt.show()
+    j = 0
+    for i in classList:
+        actuals, class_probabilities = test_class_probabilities(i)
+        fpr, tpr, _ = roc_curve(actuals, class_probabilities)
+        roc_auc = auc(fpr, tpr)
+        plt.plot(fpr, tpr, color=colors[j], lw=lw, label='Class ' + str(i)
+                                                         + 'ROC curve (area = %0.2f)' % roc_auc)
+        j = j + 1
+
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC for ' + str(classList) + ' classes')
+    plt.legend(loc="lower right")
+    plt.show()
+
+
+plot_AUC_ROC_curve([0, 1, 2, 3, 4])
+plot_AUC_ROC_curve([5, 6, 7, 8, 9])
+plot_AUC_ROC_curve([10, 11, 12, 13, 14])
+plot_AUC_ROC_curve([15, 16, 17, 18, 19])
+plot_AUC_ROC_curve([20, 21, 22, 23, 24])
+plot_AUC_ROC_curve([25, 26, 27, 28, 29, 30])
 
 # torch.save(net.state_dict(), '../Sinhala_conv_net_whiteBG.pt')
